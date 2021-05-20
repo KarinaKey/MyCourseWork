@@ -1,0 +1,101 @@
+
+tick = tick + 1;
+
+num_A = 0;
+num_B = 0;
+starve_A = 0;
+starve_B = 0;
+combat_A = 0;
+combat_B = 0;
+all_sugar_A = 0;
+all_sugar_B = 0;
+for (Agent b: cell)
+{
+	((Cell)b).dont_touch = 0;
+	starve_A = starve_A+((Cell)b).starve_agent_A_die;
+	starve_B = starve_B+((Cell)b).starve_agent_B_die;
+	
+	combat_A =combat_A+((Cell)b).combat_agent_A_die;
+	combat_B =combat_B+((Cell)b).combat_agent_B_die;
+		
+	if (((Cell)b).breed == 1){
+	num_A = num_A + 1;
+	all_sugar_A = all_sugar_A + ((Cell)b).sugar;
+	}
+	else if (((Cell)b).breed == 2){
+	num_B = num_B + 1;
+	all_sugar_B = all_sugar_B + ((Cell)b).sugar;
+	}
+	
+	
+	if (((Cell)b).psugar + 1 > ((Cell)b).c){
+		((Cell)b).psugar = ((Cell)b).c;
+	}
+	else {
+		((Cell)b).psugar = ((Cell)b).psugar + 1;
+	}
+	
+	if (((Cell)b).rule_or_Q != "Rule M" && ((Cell)b).breed != 0){
+	((Cell)b).rewards[0][0] = ((Cell)b).psugar;
+	((Cell)b).rewards[0][1] = ((Cell)b).psugar;
+	((Cell)b).rewards[0][2] = -100;
+	((Cell)b).rewards[0][3] = -100;
+	((Cell)b).rewards[1][0] = ((Cell)b).psugar - ((Cell)b).c;
+	((Cell)b).rewards[1][1] = ((Cell)b).psugar + ((Cell)b).c;
+	((Cell)b).rewards[1][2] = ((Cell)b).psugar + 10*(((Cell)b).c);
+	((Cell)b).rewards[1][3] = ((Cell)b).psugar - 2*(((Cell)b).c);
+	((Cell)b).rewards[2][0] = ((Cell)b).psugar;
+	((Cell)b).rewards[2][1] = ((Cell)b).psugar + ((Cell)b).c;
+	((Cell)b).rewards[2][2] = ((Cell)b).psugar - 2*(((Cell)b).c);
+	((Cell)b).rewards[2][3] = ((Cell)b).psugar + 10*(((Cell)b).c);
+}
+
+if (((Cell)b).breed != 0){
+
+((Cell)b).epsilon = 1/(1+Math.pow(2.72, (((Cell)b).age-5000)/1000));
+
+if (((Cell)b).epsilon < 0.05){
+	((Cell)b).epsilon = 0.05;
+}
+
+}
+	
+	
+	/*if (((Cell)b).rule_or_Q != "Rule M" && ((Cell)b).breed != 0){
+	
+		
+		((Cell)b).sugar = ((Cell)b).sugar + ((Cell)b).psugar;
+		((Cell)b).psugar = 0;
+		((Cell)b).age = ((Cell)b).age + 1;
+		
+		if (((Cell)b).sugar > ((Cell)b).metabolism){
+			((Cell)b).sugar = ((Cell)b).sugar - ((Cell)b).metabolism;
+		}
+		else {
+			if (((Cell)b).breed == 1){
+				((Cell)b).starve_agent_A_die = ((Cell)b).starve_agent_A_die+1;}
+			else {((Cell)b).starve_agent_B_die = ((Cell)b).starve_agent_B_die+1;}
+
+			((Cell)b).action = 0;
+			((Cell)b).age = 0;
+			
+			((Cell)b).metabolism = uniform_discr(1, 4);
+			((Cell)b).state = 0;
+			((Cell)b).sugar = uniform_discr(5, 25);
+			((Cell)b).vision = uniform_discr(1, 6);
+			((Cell)b).fr_num = 0;
+			((Cell)b).en_num = 0;
+			((Cell)b).empty = 0;
+
+			((Cell)b).epsilon = 0;
+			for(int i=0; i<((Cell)b).q_values.length; i++) {
+   				for(int j=0; j<((Cell)b).q_values[i].length; j++ ) {
+      				((Cell)b).q_values[i][j] = 0;
+   				}
+			}
+
+		}
+		
+	}*/
+	
+}
